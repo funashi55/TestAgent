@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
@@ -36,6 +36,15 @@ app = FastAPI()
 
 class MessageInput(BaseModel):
     message: str
+
+
+@app.get("/headers")
+async def get_headers(request: Request):
+    """
+    届いたリクエストのヘッダー情報を表示するエンドポイント
+    """
+    headers = dict(request.headers)
+    return {"headers": headers}
 
 
 @app.post("/chat/")

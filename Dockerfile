@@ -15,13 +15,13 @@ WORKDIR /app
 
 # Poetryの設定ファイルとソースコードをコピー
 COPY pyproject.toml poetry.lock ./
-COPY testagent/main.py ./
+COPY testagent ./testagent
 
 # Poetryの仮想環境を無効化
 RUN poetry config virtualenvs.create false
 
 # 依存関係をインストール
-RUN poetry install
+RUN poetry install --no-root
 
 # コンテナ起動時に実行するコマンド
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["poetry", "run", "uvicorn", "testagent.main:app", "--host", "0.0.0.0", "--port", "8080"]

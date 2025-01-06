@@ -24,15 +24,15 @@ jobs:
 
       - name: Configure docker for artifact registry
         run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev
+          gcloud auth configure-docker gcr.io
 
       - name: set TAG
         run: |
           echo "TAG=$(echo $GITHUB_REF | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Build
-        run: docker build -t us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/testagent/testagent:${{ env.TAG }} .
+        run: docker build -t gcr.io/${{ secrets.PROJECT_ID }}/testagent/testagent:${{ env.TAG }} .
 
       - name: Push
         run: |
-          docker push us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/testagent/testagent:${{ env.TAG }}
+          docker push gcr.io/${{ secrets.PROJECT_ID }}/testagent/testagent:${{ env.TAG }}
